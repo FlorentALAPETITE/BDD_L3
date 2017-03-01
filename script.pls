@@ -1,7 +1,12 @@
 
 set serveroutput on;
 
---=============
+--============================== TRIGGERS ==============================
+
+--======= TRIGGERS AUTO-INCREMENT ======= 
+
+-- Auto-increment de la clé primaire de JEU (idJeu)
+
 
 CREATE OR REPLACE TRIGGER auto_increment_idJeu 
 BEFORE INSERT ON Jeu FOR EACH ROW
@@ -12,6 +17,7 @@ END;
 
 --=============
 
+-- Auto-increment de la clé primaire de INSTANCE_JEU (cleJeu)
 
 CREATE OR REPLACE TRIGGER auto_increment_cleJeu 
 BEFORE INSERT ON Instance_Jeu FOR EACH ROW
@@ -22,6 +28,8 @@ END;
 
 --=============
 
+-- Auto-increment de la clé primaire de MAGASIN (idMagasin)
+
 CREATE OR REPLACE TRIGGER auto_increment_idMagasin 
 BEFORE INSERT ON Magasin FOR EACH ROW
 BEGIN
@@ -30,6 +38,8 @@ END;
 /
 
 --=============
+
+-- Auto-increment de la clé primaire de EDITEUR (idEditeur)
 
 CREATE OR REPLACE TRIGGER auto_increment_idEditeur 
 BEFORE INSERT ON Editeur FOR EACH ROW
@@ -40,6 +50,8 @@ END;
 
 --=============
 
+-- Auto-increment de la clé primaire de PLATEFORME (idPlateforme)
+
 CREATE OR REPLACE TRIGGER auto_increment_idPlateforme 
 BEFORE INSERT ON Plateforme FOR EACH ROW
 BEGIN
@@ -49,6 +61,7 @@ END;
 
 --=============
 
+-- Auto-increment de la clé primaire de CONSTRUCTEUR (idConstructeur)
 
 CREATE OR REPLACE TRIGGER auto_increment_idConstructeur 
 BEFORE INSERT ON Constructeur FOR EACH ROW
@@ -57,8 +70,10 @@ BEGIN
 END;
 /
 
---=============
 
+--======= AUTRES TRIGGERS ======= 
+
+-- Verification de la date d'achat d'un jeu : invalide si la date est plus grande que la date d'aujourd'hui
 
 CREATE OR REPLACE TRIGGER check_date_achat 
 BEFORE INSERT OR UPDATE ON Achat FOR EACH ROW
@@ -77,45 +92,58 @@ END;
 
 --=============
 
+-- Calcul de la donnée calculable dateFinGarantie à partir de la garantie du jeu.
 
 CREATE OR REPLACE TRIGGER calcul_date_fin_garantie
 BEFORE INSERT ON Achat FOR EACH ROW 
-DECLARE 
-	fin_garantie date;
+DECLARE 	
 	garantie_jeu Jeu.garantieJeu%type;
 BEGIN
 	SELECT garantieJeu INTO garantie_jeu FROM Jeu NATURAL JOIN Achat NATURAL JOIN Instance_Jeu WHERE cleJeu = :NEW.cleJeu;
+
+  :NEW.dateFinGarantie = add_months(:NEW.dateAchat,12*garantie_jeu);
 END;
 /
 
 
 
---============= PROCEDURES =============
+--============================== PROCEDURES ==============================
+
+-- Récupère le jeu dont le titre se rapproche le plus du titre passé en paramètre. Récupère la categorie du jeu et propose à l'utilisateur une liste de jeux du même genre qui pourrait l'interresser.
+
 
 CREATE OR REPLACE PROCEDURE memeCategorie (titreJeu IN VARCHAR)
 IS
-        catJeu Jeu.categorieJeu%type;
-        titreTrouve Jeu.titre%type;
-BEGIN	
-		SELECT titre INTO titreTrouve FROM Jeu WHERE titre LIKE '%'||titreJeu||'%';
+    catJeu Jeu.categorieJeu%type;
+    titreTrouve Jeu.titre%type;
 
-        SELECT categorieJeu INTO catJeu FROM Jeu WHERE titre = titreTrouve;
-        
-        dbms_output.put_line('Jeux trouve : ' || titreTrouve);
-        dbms_output.put_line('Genre du jeu trouve : ' || catJeu);
-        dbms_output.put_line('--------------');
-        dbms_output.put_line('Jeux du meme genre : ');
-        FOR jeu in (SELECT idJeu, titre FROM Jeu WHERE categorieJeu = catJeu AND titre <> titreTrouve) LOOP
-                dbms_output.put_line('ID: '||jeu.idJeu||'        Titre:'||jeu.titre);
-        END LOOP;
+
+BEGIN	
+		SELECT titre INTO titreTrouve FROM Jeu WHERE titre LIKE '%'||titreJeu||'%' AND rownum = 1;
+
+    SELECT categorieJeu INTO catJeu FROM Jeu WHERE titre = titreTrouve;
+
+    dbms_output.put_line('Jeux trouve : ' || titreTrouve);
+    dbms_output.put_line('Categorie du jeu trouve : ' || catJeu);
+    dbms_output.put_line('--------------');
+    dbms_output.put_line('Jeux du meme genre : ');
+    FOR jeu in (SELECT idJeu, titre FROM Jeu WHERE categorieJeu = catJeu AND titre <> titreTrouve) LOOP
+            dbms_output.put_line('ID: '||jeu.idJeu||'        Titre : '||jeu.titre);
+    END LOOP;
+    
+
+EXCEPTION 
+    WHEN NO_DATA_FOUND THEN       
+      dbms_output.put_line('Aucun jeu ne correspond a la recherche : '||titreJeu);
 END;
 /
 
 
 
 
---============= VUES =============
+--============================== VUES ==============================
 
+-- Vue permettant de récupérer facilement les différentes plateformes disponibles pour un même jeu.
 
 CREATE OR REPLACE VIEW plateforme_jeu AS 
 SELECT titre as TitreJeu, nomPlateforme as Plateforme FROM Jeu, Instance_Jeu, Plateforme 
@@ -123,7 +151,7 @@ WHERE Jeu.idJeu = Instance_Jeu.idJeu AND Instance_Jeu.plateformeJeu = Plateforme
 
 
 
---============= INDEX =============
+--============================== INDEX ==============================
 
 
 -- CREATE INDEX indexJeu on Jeu(idJeu);
@@ -131,8 +159,3 @@ WHERE Jeu.idJeu = Instance_Jeu.idJeu AND Instance_Jeu.plateformeJeu = Plateforme
 -- CREATE INDEX indexConstructeur on Constructeur(idConstructeur);
 -- CREATE INDEX indexPlateforme on Plateforme(idPlateforme);
 
-
-
---============= PROCEDURES =============
-
--- CREATE OR REPLACE PROCEDURE 
