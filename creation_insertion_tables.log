@@ -1,47 +1,89 @@
 *************************************************************
 ******************** DROP TABLE *****************************
 *************************************************************
-
-Table dropped.
-
-
-Table dropped.
-
-
-Table dropped.
+DROP TABLE LIEN CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Table dropped.
+DROP TABLE ACHAT CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Table dropped.
+DROP TABLE INSTANCE_JEU CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Table dropped.
+DROP TABLE PLATEFORME CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Table dropped.
+DROP TABLE CONSTRUCTEUR CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Table dropped.
+DROP TABLE JEU CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Sequence dropped.
+DROP TABLE EDITEUR CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Sequence dropped.
+DROP TABLE MAGASIN CASCADE CONSTRAINTS
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
 
 
-Sequence dropped.
+DROP SEQUENCE primary_idJeu
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
 
 
-Sequence dropped.
+DROP SEQUENCE primary_cleJeu
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
 
 
-Sequence dropped.
+DROP SEQUENCE primary_idPlateforme
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
 
 
-Sequence dropped.
+DROP SEQUENCE primary_idEditeur
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
+
+DROP SEQUENCE primary_idMagasin
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
+
+DROP SEQUENCE primary_idConstructeur
+              *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
 
 *************************************************************
 ******************** CREATE TABLE ***************************
