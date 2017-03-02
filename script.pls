@@ -101,7 +101,7 @@ DECLARE
 BEGIN
 	SELECT garantieJeu INTO garantie_jeu FROM Jeu NATURAL JOIN Achat NATURAL JOIN Instance_Jeu WHERE cleJeu = :NEW.cleJeu;
 
-  :NEW.dateFinGarantie = add_months(:NEW.dateAchat,12*garantie_jeu);
+  :NEW.dateFinGarantie := add_months(:NEW.dateAchat,12*garantie_jeu);
 END;
 /
 
@@ -119,7 +119,7 @@ IS
 
 
 BEGIN	
-		SELECT titre INTO titreTrouve FROM Jeu WHERE titre LIKE '%'||titreJeu||'%' AND rownum = 1;
+		SELECT titre INTO titreTrouve FROM Jeu WHERE UPPER(titre) LIKE '%'||UPPER(titreJeu)||'%' AND rownum = 1;
 
     SELECT categorieJeu INTO catJeu FROM Jeu WHERE titre = titreTrouve;
 
@@ -128,7 +128,7 @@ BEGIN
     dbms_output.put_line('--------------');
     dbms_output.put_line('Jeux du meme genre : ');
     FOR jeu in (SELECT idJeu, titre FROM Jeu WHERE categorieJeu = catJeu AND titre <> titreTrouve) LOOP
-            dbms_output.put_line('ID: '||jeu.idJeu||'        Titre : '||jeu.titre);
+            dbms_output.put_line('ID : '||jeu.idJeu||'        Titre : '||jeu.titre);
     END LOOP;
     
 
@@ -138,7 +138,43 @@ EXCEPTION
 END;
 /
 
+--=============
 
+-- Affiche les jeux vendus d'un magasin donné et la somme total de ses ventes
+
+CREATE OR REPLACE PROCEDURE ventesMagasin (paramMagasin IN VARCHAR)
+IS
+    idMag Magasin.idMagasin%type;
+    nomMag Magasin.nomMagasin%type;
+    prixTotal Jeu.prix%type;
+BEGIN
+  SELECT idMagasin, nomMagasin INTO idMag,nomMag FROM Magasin WHERE UPPER(nomMagasin) LIKE '%'||UPPER(paramMagasin)||'%' AND rownum = 1;
+  
+  dbms_output.put_line('Fiche de vente du Magasin : ' || nomMag);
+  dbms_output.put_line('--------------');
+
+  FOR vente IN (
+      SELECT titre, prix, dateAchat
+      FROM Magasin, Achat, Jeu, Instance_jeu 
+      WHERE magasinAchat = idMagasin AND Achat.cleJeu = Instance_jeu.cleJeu AND Jeu.idJeu = Instance_jeu.idJeu AND Magasin.idMagasin = idMag) LOOP
+           dbms_output.put_line('Jeu : '||vente.titre||'        Prix : '||vente.prix||'        Date d''achat : '|| vente.dateAchat);
+  END LOOP;
+
+  SELECT SUM(prix) INTO prixTotal
+  FROM Magasin, Achat, Jeu, Instance_jeu 
+  WHERE magasinAchat = idMagasin AND Achat.cleJeu = Instance_jeu.cleJeu AND Jeu.idJeu = Instance_jeu.idJeu AND Magasin.idMagasin = idMag;
+
+ dbms_output.put_line('--------------');
+ dbms_output.put_line('Somme des ventes : '|| prixTotal);
+
+ EXCEPTION 
+    WHEN NO_DATA_FOUND THEN       
+      dbms_output.put_line('Aucun magasin ne correspond a la recherche : '||nomMag);
+
+ --------------
+
+END;
+/
 
 
 --============================== VUES ==============================
