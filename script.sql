@@ -99,7 +99,7 @@ BEFORE INSERT ON Achat FOR EACH ROW
 DECLARE 	
 	garantie_jeu Jeu.garantieJeu%type;
 BEGIN
-	SELECT garantieJeu INTO garantie_jeu FROM Jeu NATURAL JOIN Achat NATURAL JOIN Instance_Jeu WHERE cleJeu = :NEW.cleJeu;
+	SELECT garantieJeu INTO garantie_jeu FROM Jeu,Instance_Jeu WHERE Jeu.idJeu = Instance_Jeu.idJeu AND Instance_Jeu.cleJeu = :NEW.cleJeu;
 
   :NEW.dateFinGarantie := add_months(:NEW.dateAchat,12*garantie_jeu);
 END;
@@ -188,6 +188,13 @@ WHERE Jeu.idJeu = Instance_Jeu.idJeu AND Instance_Jeu.plateformeJeu = Plateforme
 
 -- Vue permettant de compter le nombre d'instance de chaque jeu vendu.
 
+CREATE OR REPLACE VIEW statistiques_jeux AS 
+SELECT titre as TitreJeu, count(*) as NbJeuxVendus FROM Jeu, Instance_Jeu, Achat
+WHERE Jeu.idJeu = Instance_Jeu.idJeu AND Instance_Jeu.cleJeu = Achat.cleJeu GROUP BY titre ORDER BY TitreJeu;
+
+
+
+
 --============================== INDEX ==============================
 
 DROP INDEX index_nomJeu;
@@ -198,3 +205,4 @@ CREATE INDEX index_nomJeu on Jeu(titre);
 CREATE INDEX index_magasin on Magasin(nomMagasin);
 
 
+@privileges

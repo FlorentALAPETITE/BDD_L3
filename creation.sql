@@ -147,4 +147,4 @@ CREATE SEQUENCE primary_idMagasin
 
 
 
-spool off;
+@script
