@@ -186,12 +186,15 @@ SELECT titre as TitreJeu, nomPlateforme as Plateforme FROM Jeu, Instance_Jeu, Pl
 WHERE Jeu.idJeu = Instance_Jeu.idJeu AND Instance_Jeu.plateformeJeu = Plateforme.idPlateforme GROUP BY titre, nomPlateforme ORDER BY TitreJeu;
 
 
+-- Vue permettant de compter le nombre d'instance de chaque jeu vendu.
 
 --============================== INDEX ==============================
 
+DROP INDEX index_nomJeu;
+DROP INDEX index_magasin;
 
--- CREATE INDEX indexJeu on Jeu(idJeu);
--- CREATE INDEX indexMagasin on Magasin(idMagasin);
--- CREATE INDEX indexConstructeur on Constructeur(idConstructeur);
--- CREATE INDEX indexPlateforme on Plateforme(idPlateforme);
+
+CREATE INDEX index_nomJeu on Jeu(titre);
+CREATE INDEX index_magasin on Magasin(nomMagasin);
+
 
