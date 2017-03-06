@@ -70,6 +70,9 @@ Table created.
 
 Table created.
 
+*****************************************************************
+******************** CREATE SEQUENCES ***************************
+*****************************************************************
 
 Sequence created.
 
@@ -88,6 +91,9 @@ Sequence created.
 
 Sequence created.
 
+*****************************************************************
+******************** CREATE TRIGGERS ****************************
+*****************************************************************
 
 Trigger created.
 
@@ -112,39 +118,36 @@ Trigger created.
 
 Trigger created.
 
+******************************************************************
+******************** CREATE PROCEDURES ***************************
+******************************************************************
 
 Procedure created.
 
 
 Procedure created.
 
+*************************************************************
+******************** CREATE VIEWS ***************************
+*************************************************************
 
 View created.
 
 
 View created.
 
-DROP INDEX index_nomJeu
-           *
-ERROR at line 1:
-ORA-01418: specified index does not exist 
-
-
-DROP INDEX index_magasin
-           *
-ERROR at line 1:
-ORA-01418: specified index does not exist 
-
-
+*************************************************************
+******************** CREATE INDEX ***************************
+*************************************************************
 
 Index created.
 
 
 Index created.
 
-
-Role dropped.
-
+*************************************************************
+******************** CREATE PRIVILEGES **********************
+*************************************************************
 
 Role dropped.
 
@@ -156,30 +159,6 @@ Role dropped.
 
 
 Role created.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
-
-
-Role created.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
 
 
 Grant succeeded.
@@ -227,26 +206,65 @@ Grant succeeded.
 Grant succeeded.
 
 
-Grant succeeded.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
-
-
-Grant succeeded.
-
-
 Role created.
 
 
 Grant succeeded.
 
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+*************************************************************
+******************** INSERTS ********************************
+*************************************************************
 
 1 row created.
 

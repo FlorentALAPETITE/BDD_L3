@@ -1,3 +1,8 @@
+prompt *************************************************************
+prompt ******************** INSERTS ********************************
+prompt *************************************************************
+
+
 INSERT INTO EDITEUR VALUES(0, '2K');
 INSERT INTO EDITEUR VALUES(0, 'Activision');
 INSERT INTO EDITEUR VALUES(0, 'Ankama');

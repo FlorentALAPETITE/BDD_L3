@@ -1,6 +1,12 @@
 
 set serveroutput on;
 
+
+prompt *****************************************************************
+prompt ******************** CREATE TRIGGERS ****************************
+prompt *****************************************************************
+
+
 --============================== TRIGGERS ==============================
 
 --======= TRIGGERS AUTO-INCREMENT ======= 
@@ -107,6 +113,13 @@ END;
 
 
 
+prompt ******************************************************************
+prompt ******************** CREATE PROCEDURES ***************************
+prompt ******************************************************************
+
+
+
+
 --============================== PROCEDURES ==============================
 
 -- Récupère le jeu dont le titre se rapproche le plus du titre passé en paramètre. Récupère la categorie du jeu et propose à l'utilisateur une liste de jeux du même genre qui pourrait l'interresser.
@@ -176,6 +189,12 @@ BEGIN
 END;
 /
 
+prompt *************************************************************
+prompt ******************** CREATE VIEWS ***************************
+prompt *************************************************************
+
+
+
 
 --============================== VUES ==============================
 
@@ -194,11 +213,14 @@ WHERE Jeu.idJeu = Instance_Jeu.idJeu AND Instance_Jeu.cleJeu = Achat.cleJeu GROU
 
 
 
+prompt *************************************************************
+prompt ******************** CREATE INDEX ***************************
+prompt *************************************************************
+
+
+
 
 --============================== INDEX ==============================
-
-DROP INDEX index_nomJeu;
-DROP INDEX index_magasin;
 
 
 CREATE INDEX index_nomJeu on Jeu(titre);

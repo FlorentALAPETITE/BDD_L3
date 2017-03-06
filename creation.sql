@@ -109,6 +109,11 @@ CREATE TABLE LIEN(
 
 -- SEQUENCES
 
+prompt *****************************************************************
+prompt ******************** CREATE SEQUENCES ***************************
+prompt *****************************************************************
+
+
 CREATE SEQUENCE primary_idJeu
 	START WITH     1
 	INCREMENT BY   1
